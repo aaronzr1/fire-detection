@@ -1,10 +1,10 @@
 // ESP8266 Sensor Node - sends data via ESP-NOW
-// Test mode: press FLASH button (GPIO0) to send alert
+// IR flame sensor on D6 (active-low: LOW = flame detected)
 
 #include <ESP8266WiFi.h>
 #include <espnow.h>
 
-#define BUTTON_PIN 0  // FLASH button on NodeMCU (active-low)
+#define FLAME_PIN D6  // GPIO12
 
 uint8_t broadcastAddr[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
@@ -24,7 +24,7 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(FLAME_PIN, INPUT);
 
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
@@ -41,20 +41,18 @@ void setup() {
   esp_now_register_send_cb(onSent);
   esp_now_add_peer(broadcastAddr, ESP_NOW_ROLE_SLAVE, 0, NULL, 0);
 
-  Serial.println("Ready - press FLASH button to send alert");
+  Serial.println("Sensor node ready");
 }
 
 void loop() {
-  bool pressed = digitalRead(BUTTON_PIN) == LOW;
+  bool flame = digitalRead(FLAME_PIN) == LOW;
 
-  data.alert = pressed;
+  data.alert = flame;
   data.temperature = 25.0;
 
   esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(data));
 
-  if (pressed) {
-    Serial.println(">>> ALERT sent");
-  }
+  Serial.println(flame ? "FLAME detected!" : "clear");
 
-  delay(100);
+  delay(200);
 }
