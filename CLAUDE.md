@@ -11,4 +11,10 @@ Do NOT use `arduino-cli upload` — it will timeout. Compile with `arduino-cli c
 
 # ESP8266 (NodeMCU base)
 
-Board: NodeMCU base (ESP8266). FQBN: `esp8266:esp8266:nodemcuv2`. Sketch folder: `esp8266_bridge/`.
+Two NodeMCU boards (ESP8266). FQBN: `esp8266:esp8266:nodemcuv2`. Connected via ESP-NOW (broadcast).
+
+- `esp8266_sensor/` — reads sensors, sends data via ESP-NOW
+- `esp8266_buzzer/` — receives data, drives buzzer on D1 (GPIO5)
+- `fire_monitor/` — Arduino Mega reference code (sensors + buzzer, standalone)
+
+Note that the buzzer is active-low
