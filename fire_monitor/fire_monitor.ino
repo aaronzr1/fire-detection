@@ -3,6 +3,7 @@
 #include "buzzer.h"
 
 #define FLAME_PIN 31
+#define FLAME_ANALOG_PIN A0
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 bool sensorReady = false;
@@ -38,6 +39,7 @@ void loop() {
   }
 
   int flame = digitalRead(FLAME_PIN);
+  int flameAnalog = analogRead(FLAME_ANALOG_PIN);
   double ambientC = mlx.readAmbientTempC();
   double objectC = mlx.readObjectTempC();
 
@@ -47,8 +49,10 @@ void loop() {
     buzzerOff();
   }
 
-  Serial.print(flame == LOW ? "FLAME" : "    ");
-  Serial.print("  | Ambient: ");
+  Serial.print(flame == LOW ? "FLAME" : "     ");
+  Serial.print(" | IR: ");
+  Serial.print(flameAnalog);
+  Serial.print("\t| Ambient: ");
   Serial.print(ambientC, 1);
   Serial.print(" C | Object: ");
   Serial.print(objectC, 1);

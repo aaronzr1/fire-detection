@@ -8,3 +8,7 @@ avrdude -patmega2560 -cwiring -P/dev/cu.usbmodem141021 -b115200 -D -Uflash:w:$HE
 ```
 
 Do NOT use `arduino-cli upload` — it will timeout. Compile with `arduino-cli compile`, then find the .hex in `~/Library/Caches/arduino/sketches/` and upload with avrdude directly.
+
+# ESP8266 (NodeMCU base)
+
+Board: NodeMCU base (ESP8266). FQBN: `esp8266:esp8266:nodemcuv2`. Sketch folder: `esp8266_bridge/`.
