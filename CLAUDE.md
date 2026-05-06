@@ -18,3 +18,11 @@ Two NodeMCU boards (ESP8266). FQBN: `esp8266:esp8266:nodemcuv2`. Connected via E
 - `fire_monitor/` — Arduino Mega reference code (sensors + buzzer, standalone)
 
 Note that the buzzer is active-low
+
+# Deployment
+
+- **Sensor node** is deployed on an offline Windows laptop (no WiFi/internet). All dependencies are bundled in `binaries/` for offline install.
+- **Buzzer node** is deployed separately, receives data wirelessly via ESP-NOW (no WiFi network needed).
+- Windows scripts live in `windows/` (`setup.ps1`, `monitor.ps1`, `record.ps1`) and handle serial monitoring and data recording on the deployment laptop.
+- `record.py` is the canonical recording logic; `record.ps1` is a thin wrapper that activates the venv and calls it.
+- Serial output format from sensor node: `flame,gas,gasRaw,ambientC,objectC` (5 CSV fields per line, 115200 baud, 500ms interval).
