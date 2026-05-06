@@ -1,7 +1,8 @@
 param(
-    [string]$Port = "COM19",
+    [string]$Port = "COM18",
     [int]$Baud = 115200
 )
 
-$python = Join-Path $PSScriptRoot ".." ".venv\Scripts\python.exe"
-& $python -m serial.tools.miniterm $Port $Baud --raw
+$root = Split-Path $PSScriptRoot -Parent
+$python = Join-Path $root ".venv\Scripts\python.exe"
+& $python (Join-Path $root "monitor.py") --port $Port --baud $Baud
